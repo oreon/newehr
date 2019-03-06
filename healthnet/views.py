@@ -23,7 +23,7 @@ def authentication_check(request, required_roles=None, required_GET=None):
     :return: A redirect request if there's a problem, None otherwise
     """
     # Authentication check. Users not logged in cannot view this page.
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         request.session['alert_danger'] = "You must be logged into HealthNet to view that page."
         return HttpResponseRedirect('/')
     # Sanity check. Users without accounts cannot interact with HealthNet
@@ -63,7 +63,7 @@ def parse_session(request, template_data=None):
 
 
 def logout_view(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         logger.log(Action.ACTION_ACCOUNT, "Account logout", request.user)
     # Django deletes the session on logout, so we need to preserve any alerts currently waiting to be displayed
     saved_data = {}
@@ -83,7 +83,7 @@ def logout_view(request):
 
 def login_view(request):
     # Authentication check. Users currently logged in cannot view this page.
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return HttpResponseRedirect('/profile/')
     # Get the template data from the session
     template_data = parse_session(request, {'form_button': "Login"})
@@ -108,7 +108,7 @@ def login_view(request):
 
 def register_view(request):
     # Authentication check. Users logged in cannot view this page.
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return HttpResponseRedirect('/profile/')
     # Get the template data from the session
     template_data = parse_session(request, {'form_button': "Register"})

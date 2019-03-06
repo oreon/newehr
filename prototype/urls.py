@@ -1,12 +1,14 @@
-from django.conf.urls import patterns, include, url
+from django.urls import path, include
 
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Examples:
-    # url(r'^$', 'prototype.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-    url(r'^', include('healthnet.urls', namespace="healthnet")),
-    url(r'^admin/', include(admin.site.urls)),
-)
+    # path(r'^$', 'prototype.views.home', name='home'),
+    # path(r'^blog/', include('blog.paths')),
+    path('', include('healthnet.urls')),
+    
+    path('admin/', admin.site.urls),
+]
+#urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

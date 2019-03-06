@@ -37,7 +37,7 @@ class Location(models.Model):
 class Hospital(models.Model):
     name = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
-    location = models.OneToOneField(Location)
+    location = models.OneToOneField(Location, on_delete = models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -73,7 +73,7 @@ class Profile(models.Model):
     phone = models.CharField(blank=True, max_length=20)
     allergies = models.CharField(blank=True, max_length=250)
     created = models.DateTimeField(auto_now_add=True)
-    prefHospital = models.ForeignKey(Hospital, null=True)
+    prefHospital = models.ForeignKey(Hospital, null=True, on_delete= models.CASCADE)
 
     def get_populated_fields(self):
         """
@@ -138,8 +138,8 @@ class Account(models.Model):
         return "None"
 
     role = models.IntegerField(default=0, choices=ACCOUNT_TYPES)
-    profile = models.OneToOneField(Profile)
-    user = models.OneToOneField(User)
+    profile = models.OneToOneField(Profile, on_delete = models.CASCADE)
+    user = models.OneToOneField(User ,on_delete = models.CASCADE)
 
     def __str__(self):
         if self.role == 30:
@@ -196,7 +196,7 @@ class Action(models.Model):
     type = models.IntegerField(default=0, choices=ACTION_TYPES)
     timePerformed = models.DateTimeField(auto_now_add=True)
     description = models.CharField(max_length=100)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
     """
     Might have to add this field to specify:
     - where action was committed
@@ -207,11 +207,11 @@ class Action(models.Model):
 
 
 class Appointment(models.Model):
-    doctor = models.ForeignKey(User, related_name="doctors")
-    patient = models.ForeignKey(User, related_name="patients")
+    doctor = models.ForeignKey(User, related_name="doctors", on_delete = models.CASCADE)
+    patient = models.ForeignKey(User, related_name="patients", on_delete = models.CASCADE)
     description = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
-    hospital = models.ForeignKey(Hospital)
+    hospital = models.ForeignKey(Hospital, on_delete = models.CASCADE)
     startTime = models.TimeField()
     endTime = models.TimeField()
     date = models.DateField()
@@ -233,15 +233,15 @@ class Appointment(models.Model):
 
 
 class Message(models.Model):
-    target = models.ForeignKey(Account, related_name="messages_received")
-    sender = models.ForeignKey(Account, related_name="messages_sent")
+    target = models.ForeignKey(Account, related_name="messages_received", on_delete = models.CASCADE)
+    sender = models.ForeignKey(Account, related_name="messages_sent", on_delete = models.CASCADE)
     header = models.CharField(max_length=300)
     body = models.CharField(max_length=1000)
     read = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
 class Notification(models.Model):
-    user = models.ForeignKey(Account, related_name="notifications_all")
+    user = models.ForeignKey(Account, related_name="notifications_all", on_delete = models.CASCADE)
     message = models.CharField(max_length=200)
     read = models.BooleanField(default=False)
     sent_timestamp = models.DateTimeField(auto_now_add=True)
@@ -249,17 +249,17 @@ class Notification(models.Model):
 
 
 class Admission(models.Model):
-    patient = models.ForeignKey(User, related_name="patients1")
+    patient = models.ForeignKey(User, related_name="patients1", on_delete = models.CASCADE)
     time = models.TimeField(default=datetime.datetime.now)
     date = models.DateField(default=datetime.date.today())
     reason = models.CharField(max_length=200)
-    hospital = models.ForeignKey(Hospital)
+    hospital = models.ForeignKey(Hospital, on_delete = models.CASCADE)
     active = models.BooleanField(default=True)
 
 
 class Prescription(models.Model):
-    patient = models.ForeignKey(User, related_name="patient")
-    doctor = models.ForeignKey(User, related_name="doctor")
+    patient = models.ForeignKey(User, related_name="patient", on_delete = models.CASCADE)
+    doctor = models.ForeignKey(User, related_name="doctor", on_delete = models.CASCADE)
     date = models.DateField()
     medication = models.CharField(max_length=100)
     strength = models.CharField(max_length=30)
@@ -285,7 +285,7 @@ class MedicalInfo(models.Model):
                 return item[1]
         return "None"
 
-    patient = models.ForeignKey(User, related_name="patiento")
+    patient = models.ForeignKey(User, related_name="patiento", on_delete = models.CASCADE)
     bloodType = models.CharField(max_length=10, choices=BLOOD)
     allergy = models.CharField(max_length=100)
     alzheimer = models.BooleanField()
@@ -293,6 +293,7 @@ class MedicalInfo(models.Model):
     diabetes = models.BooleanField()
     stroke = models.BooleanField()
     comments= models.CharField(max_length=700)
+    
 
     def get_populated_fields(self):
         fields = {
@@ -311,10 +312,10 @@ class MedicalInfo(models.Model):
 class MedicalTest(models.Model):
     name = models.CharField(max_length=50)
     date = models.DateField()
-    hospital = models.ForeignKey(Hospital)
+    hospital = models.ForeignKey(Hospital, on_delete = models.CASCADE)
     description = models.CharField(max_length=200)
-    doctor = models.ForeignKey(User, related_name="docs")
-    patient = models.ForeignKey(User, related_name="pts")
+    doctor = models.ForeignKey(User, related_name="docs", on_delete = models.CASCADE)
+    patient = models.ForeignKey(User, related_name="pts", on_delete = models.CASCADE)
     private = models.BooleanField(default=True)
     completed = models.BooleanField()
     # image1 = models.FileField(blank=True, null=True, upload_to='images/%Y/%m/%d')
