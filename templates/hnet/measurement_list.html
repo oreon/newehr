@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load django_tables2 %}
+{% load app_filters %}
+{% block title %}View Inpatients{% endblock %}
+{% block sidebar_admission_list %}active{% endblock %}
+{% block body_header %}your measurements{% endblock %}
+{% block body %}
+
+<h1> <a href="{% url "measurement_create"    %}">Add</a> </h1>
+{% render_table table %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Created</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for measurement in object_list %}
+        <tr>
+            <td>{{ measurement.msmtType.name }}</td>
+            <td>{{ measurement.value }}</td>
+            <td>{{ measurement.created }}</td>
+            <td>
+                <a href="{% url "measurement_detail"  measurement.id  %}">View</a>
+                <a href="{% url "measurement_update"  measurement.id  %}">Edit</a>
+                <a href="{% url "measurement_delete"  measurement.id  %}">Delete</a>
+            </td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

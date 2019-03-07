@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}View Inpatients{% endblock %}
+{% block sidebar_admission_list %}active{% endblock %}
+{% block body_header %}View Inpatients{% endblock %}
+{% block body %}
+<h1> Update</h1>
+
+<form  method="post">
+{% csrf_token %}
+{{ form.as_p }}
+<input  type="submit"  value="Submit"  />
+</form>
+{% endblock %}
