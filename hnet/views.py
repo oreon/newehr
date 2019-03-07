@@ -6,13 +6,13 @@ from django.urls import reverse
 from django.contrib import messages
 
 
-import django_tables2 as tables
+# import django_tables2 as tables
 
 
-class MsmtTable(tables.Table):
-    class Meta:
-        model = Measurement
-        template_name = 'django_tables2/bootstrap.html'
+# class MsmtTable(tables.Table):
+#     class Meta:
+#         model = Measurement
+#         template_name = 'django_tables2/bootstrap.html'
 # Create your views here.
 class MeasurementList(ListView): 
     model = Measurement
@@ -20,8 +20,8 @@ class MeasurementList(ListView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        # Add in the publisher
-        context['table'] =  MsmtTable(Measurement.objects.filter(patient = self.request.user))
+        # Add in the table
+        #context['table'] =  MsmtTable(Measurement.objects.filter(patient = self.request.user))
         return context
 
     def get_queryset(self):

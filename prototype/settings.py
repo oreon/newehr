@@ -129,7 +129,7 @@ INSTALLED_APPS = [
     'rest_framework', # Add this line
     'healthnet.apps.HealthnetConfig',
     'hnet',
-    'django_tables2'
+    #'django_tables2'
 
     #'blog.apps.BlogConfig',
 ]
