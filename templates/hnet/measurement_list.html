@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load django_tables2 %}
+
 {% load app_filters %}
 {% block title %}View Inpatients{% endblock %}
 {% block sidebar_admission_list %}active{% endblock %}
@@ -7,7 +7,7 @@
 {% block body %}
 
 <h1> <a href="{% url "measurement_create"    %}">Add</a> </h1>
-{% render_table table %}
+
 
 <table>
     <thead>
