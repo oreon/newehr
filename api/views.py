@@ -2,6 +2,7 @@ import jwt,json
 from rest_framework import views, status, exceptions
 from rest_framework.response import Response
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 
 from django.http import HttpResponse
 from rest_framework.authentication import get_authorization_header, BaseAuthentication
@@ -75,8 +76,9 @@ class Login(views.APIView):
         
         username = request.data['username']
         password = request.data['password']
+
         try:
-            user = User.objects.get(username=username, password=password)
+            user = authenticate(username=username, password=password)
         except User.DoesNotExist:
             return Response({'Error': "Invalid username/password"}, status="400")
         if user:
@@ -84,9 +86,10 @@ class Login(views.APIView):
                 'id': user.id,
                 'email': user.email,
             }
-            jwt_token = {'token': jwt.encode(payload, "SECRET_KEY")}
-
-            return HttpResponse(
+            print(payload)
+            jwt_token = {'token': jwt.encode(payload, 'abracadabra', algorithm='HS256').decode('utf-8')}
+            print(jwt_token)
+            return Response(
               json.dumps(jwt_token),
               status=200,
               content_type="application/json"

@@ -130,6 +130,7 @@ INSTALLED_APPS = [
     'healthnet.apps.HealthnetConfig',
     'hnet',
     'api',
+    'corsheaders',
     #'django_tables2'
 
     #'blog.apps.BlogConfig',
@@ -143,7 +144,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:8100',
+)
 
 ROOT_URLCONF = 'prototype.urls'
 
