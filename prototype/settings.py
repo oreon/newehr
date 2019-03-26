@@ -165,6 +165,12 @@ FCM_DJANGO_SETTINGS = {
         "DELETE_INACTIVE_DEVICES": True,
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
 ROOT_URLCONF = 'prototype.urls'
 
 SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
