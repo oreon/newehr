@@ -114,7 +114,7 @@ SECRET_KEY = '+4y4%)c841ophejoz&v595$*$qv=z_r3=drb#f*63rvl%j@if('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.7', 'localhost']
 
 
 # Application definition
@@ -131,6 +131,7 @@ INSTALLED_APPS = [
     'hnet',
     'api',
     'corsheaders',
+    'fcm_django'
     #'django_tables2'
 
     #'blog.apps.BlogConfig',
@@ -150,7 +151,19 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = (
     'localhost:8100',
+    'localhost'
 )
+
+FCM_DJANGO_SETTINGS = {
+        "FCM_SERVER_KEY": "AAAAfhzZkVw:APA91bETC4naXRLIOfE6iwylGx-DL6rPWZJ99igog1tCx_8lCEvmFEIsM3PNH57maDnnZYlhR8tOx_SkF0-wr2rp1buro_CWXV4sLkieOIMmomhl_0zofm5yts035PJqpynhu_PEIQFu",
+         # true if you want to have only one active device per registered user at a time
+         # default: False
+        "ONE_DEVICE_PER_USER": True,
+         # devices to which notifications cannot be sent,
+         # are deleted upon receiving error response from FCM
+         # default: False
+        "DELETE_INACTIVE_DEVICES": True,
+}
 
 ROOT_URLCONF = 'prototype.urls'
 
