@@ -105,6 +105,34 @@ class Profile(models.Model):
     def __str__(self):
         return self.firstname + " " + self.lastname
 
+class PatientManager(models.Manager):
+    def get_queryset(self):
+        return super(PatientManager,
+                     self).get_queryset() \
+            .filter(role=10)
+
+class Patient(models.Model):
+    GENDER = (
+        ('M', "Male"),
+        ('F', "Female"),
+    )
+    firstname = models.CharField(blank=True, max_length=50)
+    lastname = models.CharField(blank=True, max_length=50)
+    insurance = models.CharField(max_length=50)
+    emergencyContactName = models.CharField(blank=True, max_length=50)
+    emergencyContactNumber = models.CharField(blank=True, max_length=20)
+    sex = models.CharField(blank=True, max_length=1, choices=GENDER)
+    birthday = models.DateField(default=date(1000, 1, 1))
+    phone = models.CharField(blank=True, max_length=20)
+    allergies = models.CharField(blank=True, max_length=250)
+    prefHospital = models.ForeignKey(Hospital, null=True, on_delete= models.CASCADE)
+
+class Note(models.Model):
+    description = models.TextField()
+    patient = models.ForeignKey(Patient, related_name="notes",  on_delete= models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, related_name="author", on_delete = models.CASCADE)
+
 
 class Account(models.Model):
     ACCOUNT_UNKNOWN = 0
@@ -140,6 +168,8 @@ class Account(models.Model):
     role = models.IntegerField(default=0, choices=ACCOUNT_TYPES)
     profile = models.OneToOneField(Profile, on_delete = models.CASCADE)
     user = models.OneToOneField(User ,on_delete = models.CASCADE)
+    objects = models.Manager()
+    patients = PatientManager() # Our custom manager.
 
     def __str__(self):
         if self.role == 30:
@@ -155,6 +185,7 @@ class Account(models.Model):
             'profile',
             'user'
         )
+
 
 
 class Action(models.Model):
