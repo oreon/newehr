@@ -132,7 +132,8 @@ class Note(models.Model):
     patient = models.ForeignKey(Patient, related_name="notes",  on_delete= models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, related_name="author", on_delete = models.CASCADE)
-
+    class Meta:
+        ordering = ['-created']
 
 class Account(models.Model):
     ACCOUNT_UNKNOWN = 0

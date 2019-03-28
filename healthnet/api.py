@@ -46,7 +46,7 @@ class PatientViewSet(viewsets.ModelViewSet):
     @action(methods=['get'], detail= True)
     def notes(self, request, pk=None):
         patient = self.get_object()
-        qs = patient.notes.all().order_by('created')
+        qs = patient.notes.all()
         
         page = self.paginate_queryset(qs)
         if page is not None:
@@ -64,12 +64,24 @@ class NoteSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class NoteViewSet(viewsets.ModelViewSet):
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('description', )
     pagination_class = BasePagination
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+
+    #permission_classes = (IsAuthenticated,)
+    class Meta:
+        model = User
+        fields = '__all__'
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = NoteSerializer
 
 # class ArticleViewSet(viewsets.ModelViewSet):
 #     queryset = Article.objects.all()
@@ -79,5 +91,7 @@ class NoteViewSet(viewsets.ModelViewSet):
 router = routers.SimpleRouter(trailing_slash=False)
 router.register(r'patients', PatientViewSet)
 router.register(r'notes', NoteViewSet)
+router.register(r'users', UserViewSet)
+
     
     
