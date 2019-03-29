@@ -111,6 +111,10 @@ class PatientManager(models.Manager):
                      self).get_queryset() \
             .filter(role=10)
 
+
+
+    
+
 class Patient(models.Model):
     GENDER = (
         ('M', "Male"),
@@ -127,13 +131,36 @@ class Patient(models.Model):
     allergies = models.CharField(blank=True, max_length=250)
     prefHospital = models.ForeignKey(Hospital, null=True, on_delete= models.CASCADE)
 
+    def age(self, born):
+        today = date.today()
+        return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+
+    def __str__(self):  
+        return '{}, {} {} {}'.format(self.lastname , self.firstname, self.age(self.birthday), self.sex )
+
 class Note(models.Model):
     description = models.TextField()
     patient = models.ForeignKey(Patient, related_name="notes",  on_delete= models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, related_name="author", on_delete = models.CASCADE)
+    image = models.ImageField(null = False, blank =  True, )
     class Meta:
         ordering = ['-created']
+
+class Script(models.Model):
+    notes = models.TextField()  
+    patient = models.ForeignKey(Patient, related_name="scripts",  on_delete= models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, related_name="scripts", on_delete = models.CASCADE)
+    class Meta:
+        ordering = ['-created']          
+
+class ScriptItem(models.Model):
+    drug =  models.CharField(max_length=150)
+    duration = models.IntegerField()
+    refills = models.IntegerField()
+    script = models.ForeignKey(Script, related_name="scriptItems", on_delete = models.CASCADE)
+
 
 class Account(models.Model):
     ACCOUNT_UNKNOWN = 0
