@@ -109,7 +109,7 @@ class ScriptItemSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ScriptItem
-        fields = '__all__' 
+        exclude = ('script', )
 
 class ScriptSerializer(serializers.ModelSerializer):
     scriptItems = ScriptItemSerializer(many=True)
@@ -117,8 +117,8 @@ class ScriptSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         scriptItems = validated_data.pop('scriptItems')
         script = Script.objects.create(**validated_data)
-        for orderItem in scriptItems:
-            ScriptItem.objects.create(script=script, **scriptItems)
+        for item in scriptItems:
+            ScriptItem.objects.create(script=script, **item)
         return script
 
     class Meta:

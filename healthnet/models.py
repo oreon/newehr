@@ -158,7 +158,7 @@ class Script(models.Model):
 class ScriptItem(models.Model):
     drug =  models.CharField(max_length=150)
     duration = models.IntegerField()
-    refills = models.IntegerField()
+    refills = models.IntegerField(blank=True, null = True, default= 1)
     script = models.ForeignKey(Script, related_name="scriptItems", on_delete = models.CASCADE)
 
 
