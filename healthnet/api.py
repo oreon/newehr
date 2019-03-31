@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework import filters, pagination
 
 from rest_framework.decorators import action
-
+from hnet.api import * 
 
 
 class BasePagination(pagination.PageNumberPagination):
@@ -68,6 +68,14 @@ class PatientViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = ScriptSerializer(qs, many=True)
+        return Response(serializer.data)
+
+    @action(methods=['get'], detail= True)
+    def measurements(self, request, pk=None):
+        patient = self.get_object()
+        qs = patient.measurements.all()
+
+        serializer = MeasurementSerializer(qs, many=True)
         return Response(serializer.data)
 
 
