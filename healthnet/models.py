@@ -122,14 +122,18 @@ class Patient(models.Model):
     )
     firstname = models.CharField(blank=True, max_length=50)
     lastname = models.CharField(blank=True, max_length=50)
-    insurance = models.CharField(max_length=50)
+    insurance = models.CharField(max_length=50, blank=True)
     emergencyContactName = models.CharField(blank=True, max_length=50)
     emergencyContactNumber = models.CharField(blank=True, max_length=20)
-    sex = models.CharField(blank=True, max_length=1, choices=GENDER)
-    birthday = models.DateField(default=date(1000, 1, 1))
+    gender = models.CharField(blank=True, max_length=1, choices=GENDER)
+    birthday = models.DateField(default=date(2002, 1, 1))
     phone = models.CharField(blank=True, max_length=20)
     allergies = models.CharField(blank=True, max_length=250)
     prefHospital = models.ForeignKey(Hospital, null=True, on_delete= models.CASCADE)
+    medicalHistory = models.TextField(blank=True, null=True)
+    familyHistory = models.TextField(blank=True, null=True)
+    
+
 
     def age(self, born):
         today = date.today()
