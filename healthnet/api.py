@@ -14,7 +14,7 @@ from hnet.api import *
 
 
 class BasePagination(pagination.PageNumberPagination):
-    page_size = 4
+    page_size = 40
 
 # class QuoteSerializer(serializers.ModelSerializer):
 
@@ -38,7 +38,7 @@ class PatientSerializer(serializers.ModelSerializer):
 
 
 class PatientViewSet(viewsets.ModelViewSet):
-    queryset = Patient.objects.all()
+    queryset = Patient.objects.all().order_by('firstname')
     serializer_class = PatientSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('^firstname', '^lastname')

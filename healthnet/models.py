@@ -314,7 +314,7 @@ class Notification(models.Model):
 class Admission(models.Model):
     patient = models.ForeignKey(User, related_name="patients1", on_delete = models.CASCADE)
     time = models.TimeField(default=datetime.datetime.now)
-    date = models.DateField(default=datetime.date.today())
+    date = models.DateField(default=datetime.date.today)
     reason = models.CharField(max_length=200)
     hospital = models.ForeignKey(Hospital, on_delete = models.CASCADE)
     active = models.BooleanField(default=True)
